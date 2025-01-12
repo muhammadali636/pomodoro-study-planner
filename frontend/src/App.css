@@ -1,0 +1,87 @@
+/* Jungle-green-inspired theme */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ddf6dd; /*LIGHT GREEN*/
+  }
+  
+  .home {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h2 {
+    color: #145e34; /* Dark jungle green text */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .create-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .create-container input {
+    padding: 10px;
+    border: 2px solid #145A32;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+  }
+  
+  .create-container button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #2ab162; /*button color */
+    color: white;
+    cursor: pointer;
+    border-radius: 0 4px 4px 0;
+  }
+  
+  .create-container button:hover {
+    background-color: #1c8f50;
+  }
+  
+  .task-list {
+    margin-top: 10px;
+  }
+  
+  .task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #bef6be;
+    border-radius: 4px;
+  }
+  
+  .checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .icon {
+    margin-right: 10px;
+    color: #156437;
+    font-size: 1.2em;
+  }
+  
+  .delete-icon .icon:hover {
+    color: red; /*del danger col*/
+  }
+  
+  .no-record h3 {
+    color: #555555;
+    text-align: center;
+  }
+  
+  .line-through {
+    text-decoration: line-through;
+    color: #555555;
+  }
+  
