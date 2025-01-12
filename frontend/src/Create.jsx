@@ -3,23 +3,23 @@ import React, { useState } from 'react'
 import axios from 'axios'
 
 function Create({ onSuccess }) {
-  const [task, setTask] = useState('') //state--> CoV
+  const [task, setTask] = useState('')
 
   const handleAdd = () => {
     if (!task.trim()) return
     axios.post('http://localhost:3001/add', { task })
       .then(() => {
-        onSuccess() //refresh list in parent
+        onSuccess() //refresh.
         setTask('')
       })
       .catch(err => console.log(err))
   }
 
-  return ( //can only return one thing so return a single div.
+  return (
     <div className='create-container'>
       <input
         type='text'
-        placeholder='Enter Study Task'
+        placeholder='Enter a Study Task'
         value={task}
         onChange={e => setTask(e.target.value)}
       />

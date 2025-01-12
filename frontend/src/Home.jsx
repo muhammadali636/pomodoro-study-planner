@@ -34,11 +34,11 @@ function Home() {
 
   return (
     <div className='home'>
-      <h2>StudyList</h2>
+      <h2>Pomodoro Study Planner </h2>
       <Create onSuccess={fetchStudies} />
 
       {studies.length === 0 ? (
-        <div>No Record</div>
+        <div className='noRecText'>No Record (Enter Something to Study)</div>
       ) : (
         studies.map(study => (
           <div key={study._id} className='task'>

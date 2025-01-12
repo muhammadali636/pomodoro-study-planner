@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #ddf6dd; /*LIGHT GREEN*/
+    background-color: floralwhite; /*LIGHT GREEN*/
   }
   
   .home {
@@ -14,9 +14,18 @@ body {
   }
   
   h2 {
-    color: #145e34; /* Dark jungle green text */
+    color: darkgreen; /* Dark jungle green text */
     text-align: center;
     margin-bottom: 20px;
+  }
+
+  .noRecText {
+    color: red; 
+    font-size: 18px; 
+    font-weight: bold;
+    text-align: center; 
+    margin-top: 20px; 
+    font-family: Arial, sans-serif; 
   }
   
   .create-container {
@@ -27,22 +36,23 @@ body {
   
   .create-container input {
     padding: 10px;
-    border: 2px solid #145A32;
-    border-radius: 4px 0 0 4px;
+    border: 2px solid darkgreen;
+    border-radius: 100px 0 0 100px;
+    width: 500px;
     outline: none;
   }
   
   .create-container button {
     padding: 10px 20px;
     border: none;
-    background-color: #2ab162; /*button color */
+    background-color: green; /*button color */
     color: white;
     cursor: pointer;
     border-radius: 0 4px 4px 0;
   }
   
   .create-container button:hover {
-    background-color: #1c8f50;
+    background-color: forestgreen;
   }
   
   .task-list {
@@ -67,7 +77,7 @@ body {
   
   .icon {
     margin-right: 10px;
-    color: #156437;
+    color: green;
     font-size: 1.2em;
   }
   
@@ -76,12 +86,12 @@ body {
   }
   
   .no-record h3 {
-    color: #555555;
+    color: darkgreen;
     text-align: center;
   }
   
   .line-through {
     text-decoration: line-through;
-    color: #555555;
+    color: black;
   }
   
