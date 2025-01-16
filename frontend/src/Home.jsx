@@ -1,4 +1,3 @@
-// home.jsx: //to show and update tasks aka (Home)
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Create from './Create'
@@ -8,7 +7,7 @@ import Pomodoro from './Pomodoro'
 function Home() {
   const [studies, setStudies] = useState([])
 
-  //task (studylists) on load
+  //fetch tasks on load
   const fetchStudies = () => {
     axios.get('http://localhost:3001/get')
       .then(res => setStudies(res.data))
@@ -19,7 +18,7 @@ function Home() {
     fetchStudies()
   }, [])
 
-  //finished
+  //mark done
   const handleDone = (id) => {
     axios.put(`http://localhost:3001/update/${id}`)
       .then(() => fetchStudies())
@@ -33,6 +32,30 @@ function Home() {
       .catch(err => console.log(err))
   }
 
+  //DRAG AND DROP 
+  const handleDragStart = (e, index) => {
+    e.dataTransfer.setData('draggedItemIndex', index)
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault() //for drop
+  }
+
+  const handleDrop = (e, dropIndex) => {
+    const draggedItemIndex = e.dataTransfer.getData('draggedItemIndex')
+    if (draggedItemIndex === '' || draggedItemIndex === dropIndex.toString()) return
+
+    const newStudies = [...studies]
+    const draggedItem = newStudies[draggedItemIndex]
+    
+    //DRAGS
+    newStudies.splice(draggedItemIndex, 1)     //remove from old position
+
+    newStudies.splice(dropIndex, 0, draggedItem)     //insert at new position
+
+    setStudies(newStudies)
+  }
+
   return (
     <div className='home-container'>
       
@@ -41,14 +64,25 @@ function Home() {
         <h1>Pomodoro Study Planner</h1>
         <Create onSuccess={fetchStudies} />
 
+        {studies.length > 1 && ( //conditional rendering!!
+          <h2>Drag Study Tasks To Change Position</h2>
+        )}
+
         {studies.length === 0 ? (
-          <div className='noRecText'>No Record (Enter Something to Study)</div>
+          <div className='noRecText'> No Record (Enter Something to Study)</div>
         ) : (
-          studies.map(study => (
-            <div key={study._id} className='task'>
-              <div onClick={() => handleDone(study._id)}>
+          studies.map((study, index) => (
+            <div
+              key={study._id}
+              className='task'
+              draggable
+              onDragStart={ (e)  => handleDragStart(e, index)}
+              onDragOver={handleDragOver}
+              onDrop={(e)=> handleDrop(e, index)}
+            >
+              <div onClick={ () => handleDone(study._id)}>
                 {study.done ? <BsFillCheckCircleFill /> : <BsCircle />}
-                <span className={study.done ? 'line-through' : ''}>
+                <span className = {study.done ? 'line-through' : ''}>
                   {study.task}
                 </span>
               </div>

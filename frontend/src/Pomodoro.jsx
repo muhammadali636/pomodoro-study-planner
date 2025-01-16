@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 
 //POMODORO
 function Pomodoro() {
-            //def times in min.
+  //def times in min.
   const [studyTime, setStudyTime] = useState(25)
   const [breakTime, setBreakTime] = useState(5)
 
-            //time states (store time in total seconds)
+  //time states (store time in total seconds)
   const [timeLeft, setTimeLeft] = useState(studyTime * 60)
   const [isRunning, setIsRunning] = useState(false)
   const [onBreak, setOnBreak] = useState(false)
@@ -21,8 +21,7 @@ function Pomodoro() {
             if (!onBreak) {
               //study just ended switch to break
               return breakTime * 60
-            } 
-            else {
+            } else {
               //break ended!!!! switch to study
               return studyTime * 60
             }
@@ -34,8 +33,11 @@ function Pomodoro() {
     return () => clearInterval(timer)
   }, [isRunning, onBreak, breakTime, studyTime])
 
-  //whenever timeLeft change  decide if we switch break/study mode/
+  //whenever timeLeft change decide if we switch break/study mode
   useEffect(() => {
+    // NEW: If breakTime and studyTime are the same, skip toggling to prevent infinite loop
+    if (studyTime === breakTime) return
+
     //iff timeLeft was just reset to breakTime or studyTime
     if (timeLeft === breakTime * 60 && !onBreak) {
       setOnBreak(true)
@@ -77,8 +79,17 @@ function Pomodoro() {
     setIsRunning(false)
   }
 
+  //dec what label to show above the clock
+  //1. If not running -> "PAUSE"
+  //2. If running and on break -> "BREAK!"
+  //3. If running and study -> "STUDY!"
+  const label = isRunning 
+    ? (onBreak ? 'BREAK!' : 'STUDY!') 
+    : 'PAUSE'
+
   return (
     <div className='clock-container'>
+      <div className='text-4xl font-extrabold text-blue-800'>{label}</div>
       <div className='clock'>
         {formatTime(timeLeft)}
       </div>
