@@ -1,4 +1,4 @@
-// Basic Express server with CRUD routes
+//basic express server with routes (CRUD)
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')

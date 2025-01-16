@@ -1,0 +1,109 @@
+/* tailwind.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply m-0 p-0 font-sans bg-blue-50;
+  }
+
+  h1 {
+    @apply text-3xl font-extrabold text-blue-800 text-center mb-5;
+  }
+
+  h2 {
+    @apply text-blue-800 text-center mb-5;
+  }
+}
+
+@layer components {
+  .home {
+    @apply max-w-xl mx-auto p-5;
+  }
+
+  .noRecText {
+    @apply text-red-500 text-lg font-bold text-center mt-5;
+  }
+
+  .create-container {
+    @apply flex justify-center mb-5;
+  }
+
+  .create-container input {
+    @apply p-2 border-2 border-blue-800 rounded-l-full w-[500px] outline-none;
+  }
+
+  .create-container button {
+    @apply p-2 px-4 border-0 bg-blue-600 text-white cursor-pointer rounded-r-full font-bold;
+  }
+
+  .create-container button:hover {
+    @apply bg-blue-700;
+  }
+
+  .task-list {
+    @apply mt-2;
+  }
+
+  .task {
+    @apply flex justify-between items-center p-2 my-2 bg-blue-100 rounded cursor-pointer;
+  }
+
+  .checkbox {
+    @apply flex items-center cursor-pointer;
+  }
+
+  .icon {
+    @apply mr-2 text-blue-800 text-lg;
+  }
+
+  .delete-icon .icon:hover {
+    @apply text-red-500;
+  }
+
+  .no-record h3 {
+    @apply text-blue-800 text-center;
+  }
+
+  .my-line-through {
+    @apply line-through text-gray-600;
+  }
+
+  .home-container {
+    @apply flex justify-between items-start mx-auto max-w-6xl p-5;
+  }
+
+  .study-container {
+    @apply w-3/5;
+  }
+
+  .clock-container {
+    @apply w-2/5 flex flex-col items-center mt-5 gap-5;
+  }
+
+  .clock {
+    @apply w-[300px] h-[300px] border-4 border-blue-800 rounded-full bg-blue-100 text-blue-800 flex justify-center items-center text-2xl font-bold text-center;
+  }
+
+  .timer-buttons {
+    @apply flex gap-2;
+  }
+
+  .timer-buttons button {  /* Bold for Start/Reset/Pause */
+
+    @apply font-bold text-blue-800;
+  }
+
+  .settings-form {
+    @apply flex flex-col gap-2 w-[200px] mx-auto;
+  }
+
+  .settings-form label {
+    @apply font-bold text-blue-800;
+  }
+
+  .settings-form button {
+    @apply font-bold text-blue-800;
+  }
+}
