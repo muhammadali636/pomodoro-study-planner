@@ -11,34 +11,70 @@ function Pomodoro() {
   const [isRunning, setIsRunning] = useState(false)
   const [onBreak, setOnBreak] = useState(false)
 
-  useEffect(() => {
-    let timer = null
+  // audio object
+  // stronger.mp3 -> Study to Break
+  // alarm.mp3 ->  Break to Study
+  const strongerAudio = new Audio('/stronger.mp3')
+  const alarmAudio = new Audio('/alarm.mp3')
+
+  useEffect(function() {
+    var timer = null
     if (isRunning) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => {
+      timer = setInterval(function() {
+        setTimeLeft(function(prev) {
           if (prev <= 1) {
             //switches btw study and break
+            // 1) Pause timer and set timeLeft to 0
+            // 2) Based on whether we're leaving a study or a break, play the correct sound
+            // 3) After 5s delay, switch session and resume
+            setIsRunning(false)
+            setTimeLeft(0)
+
             if (!onBreak) {
-              //study just ended switch to break
-              return breakTime * 60
+              //study just ended, switch to break => play stronger.mp3
+              strongerAudio.play().catch(function(err) {
+                console.warn('stronger.mp3 failed to play:', err)
+              })
             } else {
-              //break ended!!!! switch to study
-              return studyTime * 60
+              //break just ended => play alarm.mp3
+              alarmAudio.play().catch(function(err) {
+                console.warn('alarm.mp3 failed to play:', err)
+              })
             }
+
+            setTimeout(function() {
+              if (!onBreak) {
+                //study just ended switch to break
+                setOnBreak(true)
+                setTimeLeft(breakTime * 60)
+              } else {
+                //break ended!!!! switch to study
+                setOnBreak(false)
+                setTimeLeft(studyTime * 60)
+              }
+              setIsRunning(true)
+            }, 5000)
+
+            return 0 //so it doesn't go negative
           }
           return prev - 1
         })
       }, 1000)
     }
-    return () => clearInterval(timer)
+    return function() {
+      clearInterval(timer)
+    }
   }, [isRunning, onBreak, breakTime, studyTime])
 
-  //whenever timeLeft change decide if we switch break/study mode
-  useEffect(() => {
-    // NEW: If breakTime and studyTime are the same, skip toggling to prevent infinite loop
-    if (studyTime === breakTime) return
+  //whenever timeLeft change decide if we switch break/study mode/
+  useEffect(function() {
+    // If timeLeft is 0, we are in the 5s transition, so skip logic
+    if (timeLeft === 0) return
 
     //iff timeLeft was just reset to breakTime or studyTime
+    //skipinh if studyTime === breakTime 
+    if (studyTime === breakTime) return
+
     if (timeLeft === breakTime * 60 && !onBreak) {
       setOnBreak(true)
     }
@@ -48,19 +84,21 @@ function Pomodoro() {
   }, [timeLeft, breakTime, studyTime, onBreak])
 
   //convert seconds to mm:ss
-  const formatTime = (secs) => {
-    const minutes = Math.floor(secs / 60)
-    const seconds = secs % 60
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+  function formatTime(secs) {
+    var minutes = Math.floor(secs / 60)
+    var seconds = secs % 60
+    return String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0')
   }
 
   //start or pause timer
-  const handleStartPause = () => {
-    setIsRunning((prev) => !prev)
+  function handleStartPause() {
+    setIsRunning(function(prev) {
+      return !prev
+    })
   }
 
   //resett timer to the beginning of the current session mode
-  const handleReset = () => {
+  function handleReset() {
     setIsRunning(false)
     // If on break, reset to breakTime
     if (onBreak) {
@@ -71,7 +109,7 @@ function Pomodoro() {
   }
 
   //take care of changes to the settings inputs
-  const handleSettingsSubmit = (e) => {
+  function handleSettingsSubmit(e) {
     e.preventDefault()
     //rreset new times
     setTimeLeft(studyTime * 60)
@@ -79,13 +117,14 @@ function Pomodoro() {
     setIsRunning(false)
   }
 
-  //dec what label to show above the clock
-  //1. If not running -> "PAUSE"
-  //2. If running and on break -> "BREAK!"
-  //3. If running and study -> "STUDY!"
-  const label = isRunning 
-    ? (onBreak ? 'BREAK!' : 'STUDY!') 
-    : 'PAUSE'
+  // Decide what label to show above the clock
+  //not running -> "PAUSE"
+  //running and on break -> "BREAK!"
+  //running and study -> "STUDY!"
+  var label = 'PAUSE'
+  if (isRunning) {
+    label = onBreak ? 'BREAK!' : 'STUDY!'
+  }
 
   return (
     <div className='clock-container'>
@@ -108,7 +147,9 @@ function Pomodoro() {
             id='studyTime'
             min='1'
             value={studyTime}
-            onChange={(e) => setStudyTime(Number(e.target.value))}
+            onChange={function(e) {
+              setStudyTime(Number(e.target.value))
+            }}
           />
         </div>
         <div>
@@ -118,7 +159,9 @@ function Pomodoro() {
             id='breakTime'
             min='1'
             value={breakTime}
-            onChange={(e) => setBreakTime(Number(e.target.value))}
+            onChange={function(e) {
+              setBreakTime(Number(e.target.value))
+            }}
           />
         </div>
         <button type='submit'>Apply</button>
